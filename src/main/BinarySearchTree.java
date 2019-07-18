@@ -15,10 +15,17 @@ import java.util.*;
  **/
 public class BinarySearchTree<K extends Comparable, V extends Comparable> implements Tree<K, V> {
 
-
     private Node<K, V> root;
     private int size;
     private int height;
+
+    public Node<K, V> getRoot() {
+        return root;
+    }
+
+    public void setRoot(Node<K, V> root) {
+        this.root = root;
+    }
 
     public int size() {
         return this.size;
@@ -33,12 +40,30 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
         return this.height;
     }
 
-    public int calHeight(Node node) {
+    private int calHeight(Node node) {
         if (node == null)
             return 0;
         int left_height = calHeight(node.left);
         int right_height = calHeight(node.right);
         return  left_height > right_height ? left_height + 1 : right_height + 1;
+    }
+
+    /**
+     * @param keys [1,2,3]
+     * @param values [1,2,3] 1
+     *            2
+     *              3
+     */
+    @Override
+    public void build(K[] keys, V[] values) {
+        if (keys.length == 0 || values.length == 0)
+            throw new NullPointerException("key and value should not be null!");
+        if (keys.length != values.length)
+            throw new ArrayIndexOutOfBoundsException("the number of keys and values should be equal!");
+        this.root = new BinarySearchTree.Node<>(keys[0], values[0]);
+        for (int i = 1; i < keys.length; i++) {
+            put(keys[i], values[i]);
+        }
     }
 
     /**
@@ -72,35 +97,16 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
 
 
     /**
-     * @param keys [1,2,3]
-     * @param values [1,2,3]
-     * @return  1
-     *            2
-     *              3
-     */
-    @Override
-    public BinarySearchTree<K, V> build(K[] keys, V[] values) {
-        if (keys.length == 0 || values.length == 0)
-            throw new NullPointerException("key and value should not be null!");
-        if (keys.length != values.length)
-            throw new ArrayIndexOutOfBoundsException("the number of keys and values should be equal!");
-        this.root = new Node<>(keys[0], values[0]);
-        for (int i = 1; i < keys.length; i++) {
-            put(keys[i], values[i]);
-        }
-
-        return new BinarySearchTree<>();
-    }
-
-    /**
-     * 插入元素 key，
+     * 插入元素 key，不能插入key值重复的元素
      *
      * @param key key
      * @param val -1
      */
-    public void put(K key, V val) {
+    public boolean put(K key, V val) {
         if (key == null || val == null)
             throw new NullPointerException("key and value should not be null!");
+
+        boolean flag = true;
 
         Node<K, V> node = new Node<K, V>(key, val);
         if (this.root == null) {
@@ -109,6 +115,8 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
         } else {
             Node<K, V> tmp = this.root;
             while (tmp != null) {
+                if (key.compareTo(tmp.key) == 0)
+                    flag = false;
                 if (key.compareTo(tmp.key) < 0) {
                     if (tmp.left == null) {
                         tmp.left = node;
@@ -126,6 +134,7 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
                 }
             }
         }
+        return flag;
     }
 
     public static void preOrder(Node node) {
@@ -211,7 +220,7 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
         Node<K, V> left;
         Node<K, V> right;
 
-        private Node(K key, V val) {
+        Node(K key, V val) {
             this.key = key;
             this.val = val;
         }
