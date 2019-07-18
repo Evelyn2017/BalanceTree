@@ -10,6 +10,8 @@ public class BinarySearchTreeTest<K extends Comparable, V extends Comparable> {
 
     private Integer[] keys = {8, 6, 9, 4, 7, 10};
     private Integer[] values = {-1, -1, -1, -1, -1, -1};
+    private Integer containKey_pass = new Integer(10);
+    private Integer containKey_fail = new Integer(-1);
 
     @Before
     public void setUp() throws Exception {
@@ -50,6 +52,8 @@ public class BinarySearchTreeTest<K extends Comparable, V extends Comparable> {
 
     @Test
     public void containKey() {
+        Assert.assertTrue(tree.containKey(containKey_pass));
+        Assert.assertFalse(tree.containKey(containKey_fail));
     }
 
     @Test

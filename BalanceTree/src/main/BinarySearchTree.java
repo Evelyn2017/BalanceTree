@@ -93,6 +93,17 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
      */
     @Override
     public boolean containKey(K key) {
+        if (root == null)
+            throw new NullPointerException("tree is empty!");
+        Node<K,V> node = this.root;
+        while (node != null) {
+            if (node.key.compareTo(key) == 0)
+                return true;
+            if (node.key.compareTo(key) < 0)
+                node = node.right;
+            else
+                node = node.left;
+        }
         return false;
     }
 
