@@ -1,4 +1,4 @@
-package GeneralTree;
+
 
 public interface Tree<K extends Comparable, V extends Comparable> {
     boolean isEmpty();

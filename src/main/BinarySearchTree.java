@@ -1,4 +1,3 @@
-package GeneralTree;
 
 import java.util.*;
 
@@ -20,6 +19,27 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
     private Node<K, V> root;
     private int size;
     private int height;
+
+    public int size() {
+        return this.size;
+    }
+
+    public boolean isEmpty() {
+        return this.root == null;
+    }
+
+    public int height() {
+        this.height = calHeight(this.root);
+        return this.height;
+    }
+
+    public int calHeight(Node node) {
+        if (node == null)
+            return 0;
+        int left_height = calHeight(node.left);
+        int right_height = calHeight(node.right);
+        return  left_height > right_height ? left_height + 1 : right_height + 1;
+    }
 
     /**
      * TODO:remove a node
@@ -50,29 +70,26 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
         return false;
     }
 
-    public int size() {
-        return this.size;
-    }
-
-    public boolean isEmpty() {
-        return this.root == null;
-    }
-
-    public int height() {
-        levelOrder(this.root);
-        return this.height;
-    }
-
 
     /**
-     * TODO:build tree -- call put()
-     * @param keys
-     * @param values
-     * @return
+     * @param keys [1,2,3]
+     * @param values [1,2,3]
+     * @return  1
+     *            2
+     *              3
      */
     @Override
-    public Tree<K, V> build(K[] keys, V[] values) {
-        return null;
+    public BinarySearchTree<K, V> build(K[] keys, V[] values) {
+        if (keys.length == 0 || values.length == 0)
+            throw new NullPointerException("key and value should not be null!");
+        if (keys.length != values.length)
+            throw new ArrayIndexOutOfBoundsException("the number of keys and values should be equal!");
+        this.root = new Node<>(keys[0], values[0]);
+        for (int i = 1; i < keys.length; i++) {
+            put(keys[i], values[i]);
+        }
+
+        return new BinarySearchTree<>();
     }
 
     /**
