@@ -60,8 +60,6 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
             throw new NullPointerException("key and value should not be null!");
         if (keys.length != values.length)
             throw new ArrayIndexOutOfBoundsException("the number of keys and values should be equal!");
-//        this.root = new BinarySearchTree.Node<>(keys[0], values[0]);
-//        this.size ++;
         for (int i = 0; i < keys.length; i++) {
             put(keys[i], values[i]);
         }
@@ -77,19 +75,30 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
     }
 
     /**
-     * TODO: set a node<K, V>
-     * @param key
-     * @param value
+     * @param key 8
+     * @param value true
      */
     @Override
-    public void set(K key, V value) {
-
+    public boolean set(K key, V value) {
+//        if (!containKey(key))
+//            throw new NullPointerException("key not found in tree!");
+        Node node = root;
+        while (node != null) {
+            if (key.compareTo(node.key) == 0) {
+                node.key = key;
+                return true;
+            }
+            if (key.compareTo(node.key) < 0)
+                node = node.right;
+            else
+                node = node.left;
+        }
+        return false;
     }
 
     /**
-     * TODO:containKey
-     * @param key
-     * @return
+     * @param key 10
+     * @return true
      */
     @Override
     public boolean containKey(K key) {
@@ -237,13 +246,4 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
             this.val = val;
         }
     }
-
-    public static void main(String[] args) {
-        Integer[] keys = {8, 6, 9, 4, 7, 10};
-        Integer[] values = {-1, -1, -1, -1, -1, -1};
-        BinarySearchTree<Integer, Integer> tree = new BinarySearchTree<>();
-        tree.build(keys, values);
-    }
-
-
 }

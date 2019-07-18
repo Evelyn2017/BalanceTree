@@ -13,6 +13,10 @@ public class BinarySearchTreeTest<K extends Comparable, V extends Comparable> {
     private Integer containKey_pass = new Integer(10);
     private Integer containKey_fail = new Integer(-1);
 
+    private BinarySearchTree.Node<Integer, Integer> set_pass = new BinarySearchTree.Node<>(8, 1);
+    private BinarySearchTree.Node<Integer, Integer> set_fail = new BinarySearchTree.Node<>(15, 1);
+
+
     @Before
     public void setUp() throws Exception {
         tree.build(keys, values);
@@ -26,8 +30,9 @@ public class BinarySearchTreeTest<K extends Comparable, V extends Comparable> {
 
     @Test
     public void isEmpty() {
-        BinarySearchTree.Node root = tree.getRoot();
-        Assert.assertNotEquals(root, null);
+         Assert.assertFalse(tree.isEmpty());
+         BinarySearchTree tree2 = new BinarySearchTree();
+         Assert.assertTrue(tree2.isEmpty());
     }
 
     @Test
@@ -48,6 +53,8 @@ public class BinarySearchTreeTest<K extends Comparable, V extends Comparable> {
 
     @Test
     public void set() {
+        Assert.assertTrue(tree.set(set_pass.key, set_pass.val));
+        Assert.assertFalse(tree.set(set_fail.key, set_fail.val));
     }
 
     @Test
