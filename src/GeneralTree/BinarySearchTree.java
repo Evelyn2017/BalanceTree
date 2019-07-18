@@ -16,20 +16,35 @@ import java.util.*;
  **/
 public class BinarySearchTree<K extends Comparable, V extends Comparable> implements Tree<K, V> {
 
+
     private Node<K, V> root;
     private int size;
     private int height;
 
+    /**
+     * TODO:remove a node
+     * @param key
+     */
     @Override
     public void remove(K key) {
 
     }
 
+    /**
+     * TODO: set a node<K, V>
+     * @param key
+     * @param value
+     */
     @Override
     public void set(K key, V value) {
 
     }
 
+    /**
+     * TODO:containKey
+     * @param key
+     * @return
+     */
     @Override
     public boolean containKey(K key) {
         return false;
@@ -48,6 +63,17 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
         return this.height;
     }
 
+
+    /**
+     * TODO:build tree -- call put()
+     * @param keys
+     * @param values
+     * @return
+     */
+    @Override
+    public Tree<K, V> build(K[] keys, V[] values) {
+        return null;
+    }
 
     /**
      * 插入元素 key，
@@ -95,9 +121,9 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
 
 
     /**
-     * @param node 8
-     *             6      9
-     *             4  7       10
+     * @param node     8
+     *               6    9
+     *             4  7     10
      * @return [8, 6, 4, 7, 9, 10]
      */
     public List<K> preOrderIter(Node node) {
