@@ -60,8 +60,9 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
             throw new NullPointerException("key and value should not be null!");
         if (keys.length != values.length)
             throw new ArrayIndexOutOfBoundsException("the number of keys and values should be equal!");
-        this.root = new BinarySearchTree.Node<>(keys[0], values[0]);
-        for (int i = 1; i < keys.length; i++) {
+//        this.root = new BinarySearchTree.Node<>(keys[0], values[0]);
+//        this.size ++;
+        for (int i = 0; i < keys.length; i++) {
             put(keys[i], values[i]);
         }
     }
@@ -120,14 +121,14 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
                 if (key.compareTo(tmp.key) < 0) {
                     if (tmp.left == null) {
                         tmp.left = node;
-                        this.size += 1;
+                        this.size ++;
                         break;
                     } else
                         tmp = tmp.left;
                 } else {
                     if (tmp.right == null) {
                         tmp.right = node;
-                        this.size += 1;
+                        this.size ++;
                         break;
                     } else
                         tmp = tmp.right;
@@ -224,6 +225,13 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
             this.key = key;
             this.val = val;
         }
+    }
+
+    public static void main(String[] args) {
+        Integer[] keys = {8, 6, 9, 4, 7, 10};
+        Integer[] values = {-1, -1, -1, -1, -1, -1};
+        BinarySearchTree<Integer, Integer> tree = new BinarySearchTree<>();
+        tree.build(keys, values);
     }
 
 
