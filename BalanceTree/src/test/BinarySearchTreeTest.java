@@ -1,3 +1,4 @@
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +21,14 @@ public class BinarySearchTreeTest<K extends Comparable, V extends Comparable> {
     @Before
     public void setUp() throws Exception {
         tree.build(keys, values);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        System.out.println("pre order traverse:");
+        BinarySearchTree.preOrder(tree.getRoot());
+        System.out.println("\nin order traverse:");
+        BinarySearchTree.inOrder(tree.getRoot());
     }
 
     @Test
@@ -49,18 +58,26 @@ public class BinarySearchTreeTest<K extends Comparable, V extends Comparable> {
 
     @Test
     public void remove() {
+        Assert.assertTrue(tree.remove(10));
     }
 
     @Test
     public void set() {
-        Assert.assertTrue(tree.set(set_pass.key, set_pass.val));
-        Assert.assertFalse(tree.set(set_fail.key, set_fail.val));
+        Assert.assertTrue(tree.set(set_pass.key, 11, 2));
+        Assert.assertFalse(tree.set(set_fail.key, 12,2));
+        BinarySearchTree.preOrder(tree.getRoot());
     }
 
     @Test
     public void containKey() {
-        Assert.assertTrue(tree.containKey(containKey_pass));
-        Assert.assertFalse(tree.containKey(containKey_fail));
+        Assert.assertNotNull(tree.containKey(containKey_pass));
+        Assert.assertNull(tree.containKey(containKey_fail));
+    }
+
+    @Test
+    public void clear() {
+        tree.clear();
+        Assert.assertEquals(tree.size(), 0);
     }
 
     @Test

@@ -9,7 +9,7 @@ import java.util.*;
  * int size();get the number of nodes
  * void put(K,V); add one node
  * void remove(K);delete one node
- * boolean containKey(K);determine if key is included
+ * boolean containKey(K);determine if key exists
  * set(K, V);modify
  * @date 2019-07-18 10:39
  **/
@@ -21,10 +21,6 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
 
     public Node<K, V> getRoot() {
         return root;
-    }
-
-    public void setRoot(Node<K, V> root) {
-        this.root = root;
     }
 
     public int size() {
@@ -50,7 +46,8 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
 
     /**
      * @param keys [1,2,3]
-     * @param values [1,2,3] 1
+     * @param values [1,2,3]
+     *          1
      *            2
      *              3
      */
@@ -65,33 +62,41 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
         }
     }
 
-    /**
-     * TODO:remove a node
-     * @param key
-     */
-    @Override
-    public void remove(K key) {
 
+    @Override
+    public boolean remove(K key){
+        if (this.root == null)
+            throw new NullPointerException("can not remove from an empty tree!");
+        if (containKey(key) == null)
+            throw new NullPointerException("key not contained in tree!");
+        if (key.compareTo(this.root.key) == 0){
+            clear();
+            return true;
+        }
+
+        return true;
     }
 
-    /**
+
+    /** TODO: after set -> left<root<right
      * @param key 8
      * @param value true
      */
     @Override
-    public boolean set(K key, V value) {
+    public boolean set(K key, K key1, V value) {
 //        if (!containKey(key))
 //            throw new NullPointerException("key not found in tree!");
         Node node = root;
         while (node != null) {
             if (key.compareTo(node.key) == 0) {
-                node.key = key;
+                node.key = key1;
+                node.val = value;
                 return true;
             }
             if (key.compareTo(node.key) < 0)
-                node = node.right;
-            else
                 node = node.left;
+            else
+                node = node.right;
         }
         return false;
     }
@@ -101,21 +106,26 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
      * @return true
      */
     @Override
-    public boolean containKey(K key) {
+    public Node<K, V> containKey(K key) {
         if (root == null)
             throw new NullPointerException("tree is empty!");
         Node<K,V> node = this.root;
         while (node != null) {
             if (node.key.compareTo(key) == 0)
-                return true;
+                return node;
             if (node.key.compareTo(key) < 0)
                 node = node.right;
             else
                 node = node.left;
         }
-        return false;
+        return null;
     }
 
+    @Override
+    public void clear() {
+        this.size = 0;
+        this.root = null;
+    }
 
     /**
      * 插入元素 key，不能插入key值重复的元素
@@ -127,8 +137,6 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
         if (key == null || val == null)
             throw new NullPointerException("key and value should not be null!");
 
-        boolean flag = true;
-
         Node<K, V> node = new Node<K, V>(key, val);
         if (this.root == null) {
             this.root = node;
@@ -137,7 +145,7 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
             Node<K, V> tmp = this.root;
             while (tmp != null) {
                 if (key.compareTo(tmp.key) == 0)
-                    flag = false;
+                    return false;
                 if (key.compareTo(tmp.key) < 0) {
                     if (tmp.left == null) {
                         tmp.left = node;
@@ -155,7 +163,7 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
                 }
             }
         }
-        return flag;
+        return true;
     }
 
     public static void preOrder(Node node) {
@@ -244,6 +252,18 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
         Node(K key, V val) {
             this.key = key;
             this.val = val;
+        }
+
+        public boolean hasNext() {
+            return left == null || right == null;
+        }
+
+        public boolean hasRight() {
+            return right == null;
+        }
+
+        public boolean hasLeft() {
+            return left == null;
         }
     }
 }
