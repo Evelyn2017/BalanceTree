@@ -21,14 +21,21 @@ public class BinarySearchTreeTest<K extends Comparable, V extends Comparable> {
     @Before
     public void setUp() throws Exception {
         tree.build(keys, values);
+        System.out.println("\n---------before------- ");
+        System.out.println("\npre order traverse:");
+        BinarySearchTree.preOrder(tree.getRoot());
+        System.out.println("\ntree size : " + tree.size());
+
     }
 
     @After
     public void tearDown() throws Exception {
-        System.out.println("pre order traverse:");
+        System.out.println("-------after-------");
+        System.out.println("\npre order traverse:");
         BinarySearchTree.preOrder(tree.getRoot());
         System.out.println("\nin order traverse:");
         BinarySearchTree.inOrder(tree.getRoot());
+        System.out.println("\ntree size: " + tree.size());
     }
 
     @Test
@@ -58,7 +65,7 @@ public class BinarySearchTreeTest<K extends Comparable, V extends Comparable> {
 
     @Test
     public void remove() {
-        Assert.assertTrue(tree.remove(10));
+        Assert.assertTrue(tree.remove(7));
     }
 
     @Test

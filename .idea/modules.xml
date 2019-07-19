@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BalanceTree.iml" filepath="$PROJECT_DIR$/BalanceTree.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BalanceTree/BalanceTree.iml" filepath="$PROJECT_DIR$/BalanceTree/BalanceTree.iml" />
     </modules>
   </component>
 </project>

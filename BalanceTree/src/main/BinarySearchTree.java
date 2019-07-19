@@ -69,13 +69,43 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
             throw new NullPointerException("can not remove from an empty tree!");
         if (containKey(key) == null)
             throw new NullPointerException("key not contained in tree!");
-        if (key.compareTo(this.root.key) == 0){
-            clear();
-            return true;
+        Node<K, V> tmp = this.root;
+        while (tmp != null) {
+            if (key.compareTo(tmp.key) == 0) {
+                // case1: leaf node
+                if (tmp.hasRight() && tmp.hasLeft()) {
+                    if (tmp.parent.key.compareTo(tmp.key) < 0)
+                        tmp.parent.right = null;
+                    else
+                        tmp.parent.left = null;
+                    size --;
+                    return true;
+                }
+
+                //TODO: case 2,3,4
+                //case 2: left child == null
+
+                //case 3: right child == null
+
+                //case 4: left child && right child != null
+            }
+            if (key.compareTo(tmp.key) < 0)
+                tmp = tmp.left;
+            else
+                tmp = tmp.right;
+
         }
 
-        return true;
+        return false;
     }
+
+//    public static void main(String[] args) {
+//        BinarySearchTree<Integer, Integer> tree = new BinarySearchTree<>();
+//        Integer[] keys = {8, 6, 9, 4, 7, 10};
+//        Integer[] values = {-1, -1, -1, -1, -1, -1};
+//        tree.build(keys, values);
+//        tree.remove(4);
+//    }
 
 
     /** TODO: after set -> left<root<right
@@ -84,8 +114,8 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
      */
     @Override
     public boolean set(K key, K key1, V value) {
-//        if (!containKey(key))
-//            throw new NullPointerException("key not found in tree!");
+        if (containKey(key) == null)
+            throw new NullPointerException("key not found in tree!");
         Node node = root;
         while (node != null) {
             if (key.compareTo(node.key) == 0) {
@@ -149,17 +179,23 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
                 if (key.compareTo(tmp.key) < 0) {
                     if (tmp.left == null) {
                         tmp.left = node;
+                        tmp.left.parent = tmp;
                         this.size ++;
                         break;
-                    } else
+                    } else {
                         tmp = tmp.left;
+                    }
+
                 } else {
                     if (tmp.right == null) {
                         tmp.right = node;
+                        tmp.right.parent = tmp;
                         this.size ++;
                         break;
-                    } else
+                    } else {
                         tmp = tmp.right;
+                    }
+
                 }
             }
         }
@@ -249,14 +285,13 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
         Node<K, V> left;
         Node<K, V> right;
 
+        Node<K, V> parent;
+
         Node(K key, V val) {
             this.key = key;
             this.val = val;
         }
 
-        public boolean hasNext() {
-            return left == null || right == null;
-        }
 
         public boolean hasRight() {
             return right == null;
