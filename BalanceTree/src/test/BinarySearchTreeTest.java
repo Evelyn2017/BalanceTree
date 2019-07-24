@@ -9,8 +9,8 @@ public class BinarySearchTreeTest<K extends Comparable, V extends Comparable> {
     private BinarySearchTree.Node<Integer, Integer> node_pass = new BinarySearchTree.Node<>(1, -1);
     private BinarySearchTree.Node<Integer, Integer> node_fail = new BinarySearchTree.Node<>(10, -1);
 
-    private Integer[] keys = {8, 6, 9, 4, 7, 10};
-    private Integer[] values = {-1, -1, -1, -1, -1, -1};
+    private Integer[] keys = {18,14, 21,8, 16, 19, 25, 5, 10, 17, 6 ,9,7,20};
+    private Integer[] values = {-1, -1, -1, -1, -1, -1, -1,-1 ,-1,-1,-1, -1,-1, -1};
     private Integer containKey_pass = new Integer(10);
     private Integer containKey_fail = new Integer(-1);
 
@@ -65,7 +65,7 @@ public class BinarySearchTreeTest<K extends Comparable, V extends Comparable> {
 
     @Test
     public void remove() {
-        Assert.assertTrue(tree.remove(7));
+        tree.remove(8);
     }
 
     @Test

@@ -46,7 +46,7 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
 
     /**
      * @param keys [1,2,3]
-     * @param values [1,2,3]
+     * @param values
      *          1
      *            2
      *              3
@@ -70,16 +70,19 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
         if (containKey(key) == null)
             throw new NullPointerException("key not contained in tree!");
         Node<K, V> tmp = this.root;
+        Node<K, V> parent = null;
         while (tmp != null) {
             if (key.compareTo(tmp.key) == 0) {
                 // case1: leaf node
-                if (tmp.hasRight() && tmp.hasLeft()) {
-                    if (tmp.parent.key.compareTo(tmp.key) < 0)
-                        tmp.parent.right = null;
-                    else
-                        tmp.parent.left = null;
-                    size --;
-                    return true;
+//                if (tmp.hasRight() && tmp.hasLeft()) {
+//                    if (tmp.parent.key.compareTo(tmp.key) < 0)
+//                        tmp.parent.right = null;
+//                    else
+//                        tmp.parent.left = null;
+//                    size --;
+//                    return true;
+                if (!(tmp.hasLeft() && tmp.hasRight())) {
+
                 }
 
                 //TODO: case 2,3,4
@@ -89,23 +92,30 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
 
                 //case 4: left child && right child != null
             }
-            if (key.compareTo(tmp.key) < 0)
+            if (key.compareTo(tmp.key) < 0) {
+                parent = tmp;
                 tmp = tmp.left;
-            else
+            }
+
+            else {
+                parent = tmp;
                 tmp = tmp.right;
-
+            }
         }
-
         return false;
     }
 
-//    public static void main(String[] args) {
-//        BinarySearchTree<Integer, Integer> tree = new BinarySearchTree<>();
-//        Integer[] keys = {8, 6, 9, 4, 7, 10};
-//        Integer[] values = {-1, -1, -1, -1, -1, -1};
-//        tree.build(keys, values);
+
+
+    public static void main(String[] args) {
+        BinarySearchTree<Integer, Integer> tree = new BinarySearchTree<>();
+        Integer[] keys = {18,14, 21,8, 16, 19, 25, 5, 10, 17, 6 ,9,7,20};
+        Integer[] values = {-1, -1, -1, -1, -1, -1, -1,-1 ,-1,-1,-1, -1,-1, -1};
+        tree.build(keys, values);
 //        tree.remove(4);
-//    }
+        preOrder(tree.getRoot());
+        inOrder(tree.getRoot());
+    }
 
 
     /** TODO: after set -> left<root<right
@@ -179,7 +189,7 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
                 if (key.compareTo(tmp.key) < 0) {
                     if (tmp.left == null) {
                         tmp.left = node;
-                        tmp.left.parent = tmp;
+//                        tmp.left.parent = tmp;
                         this.size ++;
                         break;
                     } else {
@@ -189,7 +199,7 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
                 } else {
                     if (tmp.right == null) {
                         tmp.right = node;
-                        tmp.right.parent = tmp;
+//                        tmp.right.parent = tmp;
                         this.size ++;
                         break;
                     } else {
@@ -285,7 +295,7 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
         Node<K, V> left;
         Node<K, V> right;
 
-        Node<K, V> parent;
+//        Node<K, V> parent;
 
         Node(K key, V val) {
             this.key = key;
@@ -294,11 +304,11 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
 
 
         public boolean hasRight() {
-            return right == null;
+            return right != null;
         }
 
         public boolean hasLeft() {
-            return left == null;
+            return left != null;
         }
     }
 }
