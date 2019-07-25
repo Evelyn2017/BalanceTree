@@ -94,4 +94,10 @@ public class BinarySearchTreeTest<K extends Comparable, V extends Comparable> {
         Assert.assertTrue(tree.put(node_pass.key, node_pass.val));
         Assert.assertFalse(tree.put(node_fail.key, node_fail.val));
     }
+
+    @Test
+    public void removeK() {
+        tree.removeK(30);
+        Assert.assertEquals(16, tree.size());
+    }
 }
