@@ -74,23 +74,35 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
         while (tmp != null) {
             if (key.compareTo(tmp.key) == 0) {
                 // case1: leaf node
-//                if (tmp.hasRight() && tmp.hasLeft()) {
-//                    if (tmp.parent.key.compareTo(tmp.key) < 0)
-//                        tmp.parent.right = null;
-//                    else
-//                        tmp.parent.left = null;
-//                    size --;
-//                    return true;
-                if (!(tmp.hasLeft() && tmp.hasRight())) {
-
+                if (!tmp.hasLeft() && !tmp.hasRight()) {
+                    if (parent.key.compareTo(key) < 0)
+                        parent.right = null;
+                    else
+                        parent.left = null;
+                    size --;
+                    return true;
                 }
 
-                //TODO: case 2,3,4
                 //case 2: left child == null
+                else if (!tmp.hasLeft()) {
+
+                    return true;
+                }
 
                 //case 3: right child == null
+                else if (!tmp.hasRight())
+                {
+                    tmp = tmp.left;
+                    return true;
+                }
 
                 //case 4: left child && right child != null
+                else if (tmp.hasRight() && tmp.hasLeft()) {
+                    if (tmp == parent.left)
+                        parent.left = findMax(tmp.left);
+                    else
+                        parent.right = findMin(tmp.right);
+                }
             }
             if (key.compareTo(tmp.key) < 0) {
                 parent = tmp;
@@ -259,6 +271,21 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
             postOrder(node.right);
             System.out.print(node.key + " ");
         }
+    }
+
+    public Node<K, V> findMin(Node<K, V> node) {
+        Node<K, V> res = node;
+        while(res != null) {
+            res = res.right;
+        }
+        return res;
+    }
+
+    public Node<K, V> findMax(Node<K, V> node) {
+        Node<K, V> res = node;
+        while(res != null)
+            res = res.left;
+        return res;
     }
 
     public List<K> levelOrder(Node node) {
