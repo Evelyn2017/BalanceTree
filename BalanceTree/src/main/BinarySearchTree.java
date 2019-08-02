@@ -90,10 +90,6 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
                     } else {
                         parent.right = tmp.right;
                         size--;
-//                        Map<K, V> map = new HashMap<>();
-//                        List<K> list = new ArrayList<>();
-//                        Map<K, V> map1 = new ConcurrentHashMap<>();
-//                        Map<K, V> map2 = new TreeMap<>();
                         return tmp.value;
                     }
 

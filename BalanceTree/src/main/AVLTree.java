@@ -257,8 +257,8 @@ public class AVLTree<K extends Comparable<? super K>,V extends Comparable<? supe
     @Override
     public Node<K, V> containKey(K key) {
         if (root == null)
-            throw new NullPointerException("tree is empty!");
-        Node<K,V> node = this.root;
+            return null;
+        Node<K,V> node = root;
         while (node != null) {
             if (node.key.compareTo(key) == 0)
                 return node;
@@ -281,8 +281,6 @@ public class AVLTree<K extends Comparable<? super K>,V extends Comparable<? supe
         }
     }
 
-
-
     @Override
     public void clear() {
         this.root = null;
@@ -303,6 +301,4 @@ public class AVLTree<K extends Comparable<? super K>,V extends Comparable<? supe
         }
         return res;
     }
-
-
 }
