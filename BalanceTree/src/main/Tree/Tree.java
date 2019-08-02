@@ -1,3 +1,5 @@
+package Tree;
+
 public interface Tree<K extends Comparable, V extends Comparable> {
     boolean isEmpty();
 

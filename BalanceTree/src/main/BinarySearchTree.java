@@ -1,4 +1,7 @@
+import Tree.Tree;
+
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author evelyn
@@ -12,12 +15,11 @@ import java.util.*;
  * set(K, V);modify
  * @date 2019-07-18 10:39
  **/
-public class BinarySearchTree<K extends Comparable, V extends Comparable> implements Tree<K, V> {
+public class BinarySearchTree<K extends Comparable<? super K>, V extends Comparable<? super V>> implements Tree<K, V> {
 
     private Node<K, V> root;
     private int size;
     private int height;
-
 
     public Node<K, V> getRoot() {
         return root;
@@ -71,10 +73,9 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
             throw new NullPointerException("key not contained in tree!");
         Node<K, V> tmp = this.root;
         Node<K, V> parent = new Node<>();
-        parent.left = tmp;
         while (tmp != null) {
             if (key.compareTo(tmp.key) == 0) {
-                // case1: leaf node
+                // case 1: leaf node
                 if (!tmp.hasLeft() && !tmp.hasRight()) {
                     if (parent.key.compareTo(key) < 0)
                         parent.right = null;
@@ -92,6 +93,10 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
                     } else {
                         parent.right = tmp.right;
                         size--;
+//                        Map<K, V> map = new HashMap<>();
+//                        List<K> list = new ArrayList<>();
+//                        Map<K, V> map1 = new ConcurrentHashMap<>();
+//                        Map<K, V> map2 = new TreeMap<>();
                         return true;
                     }
 
@@ -251,8 +256,7 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
                     Node<K, V> right_min = findMin(node.right);
                     node.key = right_min.key;
                     node.val = right_min.val;
-                    Node<K, V> newNode = deleteKV(node.right, node.key);
-                    node.right = newNode;
+                    node.right = deleteKV(node.right, node.key);
                 }
             }
             else if (key.compareTo(node.key) < 0)
@@ -277,13 +281,11 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
 
 
     public static void main(String[] args) {
-        BinarySearchTree<Integer, Integer> tree = new BinarySearchTree<>();
-        Integer[] keys = {18, 14, 30, 8, 16, 25, 33, 5, 10, 17, 20, 31, 36, 6,9, 7, 37};
-        Integer[] values = {-1, -1, -1, -1, -1, -1,-1,-1 ,-1,-1,-1, -1, -1,-1,-1, -1, -1};
-        tree.build(keys, values);
-//        tree.remove(18);
-        preOrder(tree.getRoot());
-        inOrder(tree.getRoot());
+//        BinarySearchTree<Integer, Integer> tree = new BinarySearchTree<>();
+//        Integer[] keys = {18, 14, 30, 8, 16, 25, 33, 5, 10, 17, 20, 31, 36, 6,9, 7, 37};
+//        Integer[] values = {-1, -1, -1, -1, -1, -1,-1,-1 ,-1,-1,-1, -1, -1,-1,-1, -1, -1};
+//        tree.build(keys, values);
+//        tree.remove(7);
     }
 
 
@@ -300,7 +302,7 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
     public boolean set(K key, K key1, V value) {
         if (containKey(key) == null)
             throw new NullPointerException("key not found in tree!");
-        Node node = root;
+        Node<K, V> node = root;
         while (node != null) {
             if (key.compareTo(node.key) == 0) {
                 node.key = key1;
@@ -480,7 +482,7 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
      * @param <K> key
      * @param <V> value
      */
-    static class Node<K, V> {
+    static class Node<K, V>{
         K key;
         V val;
         Node<K, V> left;
@@ -502,10 +504,5 @@ public class BinarySearchTree<K extends Comparable, V extends Comparable> implem
         public boolean hasLeft() {
             return left != null;
         }
-
-
-
-
-
     }
 }
