@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 /**
  * @author evelyn
  * @description Node description <>Key-Value</>
@@ -27,12 +32,12 @@ public class Node<K extends Comparable<? super K>, V extends Comparable<? super 
                 '}';
     }
 
-    boolean hasRight(Node node) {
-        return node.right != null;
+    boolean hasRight() {
+        return right != null;
     }
 
-    boolean hasLeft(Node node) {
-        return node.left != null;
+    boolean hasLeft() {
+        return left != null;
     }
 
     public K getKey() {
@@ -91,18 +96,28 @@ public class Node<K extends Comparable<? super K>, V extends Comparable<? super 
         }
     }
 
-    public Node<K, V> findMin(Node<K, V> node) {
-        Node<K, V> res = node;
-        while(res.left != null)
-            res = res.left;
-        return res;
-    }
-
-    public  Node<K, V> findMax(Node<K, V> node) {
-        Node<K, V> res = node;
-        while(res.right != null) {
-            res = res.right;
+    public List<List<K>> levelOrder(Node node) {
+        List<List<K>> res = new ArrayList<>();
+        if (node == null)
+            return res;
+        Queue<Node> q = new LinkedList<>();
+        q.add(node);
+        while (!q.isEmpty()) {
+            List<K> tmp = new ArrayList<>();
+            int level_nodes = q.size();
+            while (level_nodes > 0) {
+                Node<K, V> t = q.poll();
+                tmp.add(t.key);
+                if (t.left != null)
+                    q.add(t.left);
+                if (t.right != null)
+                    q.add(t.right);
+                level_nodes--;
+            }
+            res.add(tmp);
         }
         return res;
     }
+
+
 }

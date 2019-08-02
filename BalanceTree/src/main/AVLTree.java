@@ -10,7 +10,7 @@ import java.util.Queue;
  * @description
  * @date 2019-07-25 11:12
  **/
-public class AVLTree<K extends Comparable<? super K>,V extends Comparable<? super V>> extends AbsTree<K, V> {
+public class AVLTree<K extends Comparable<? super K>,V extends Comparable<? super V>> implements Tree<K, V> {
     private int size;
     private Node<K, V> root;
     private LinkedList<Node<K, V>> stack = new LinkedList<Node<K, V>>();
@@ -33,7 +33,7 @@ public class AVLTree<K extends Comparable<? super K>,V extends Comparable<? supe
     }
 
     public int getHeight(Node node) {
-        return node == null ? 0:node.height;
+        return node == null ? 0 : node.height;
     }
 
     /**
@@ -43,16 +43,17 @@ public class AVLTree<K extends Comparable<? super K>,V extends Comparable<? supe
         Node<K, V> tmp = node.left;
         node.left = tmp.right;
         tmp.right = node;
-        node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
-        tmp.height = Math.max(getHeight(tmp.left), getHeight(tmp.right)) + 1;
-        node = tmp;
-        return node;
+        return resetHeight(node, tmp);
     }
 
     private Node<K, V> rotateRR(Node<K, V> node) {
         Node<K, V> tmp = node.right;
         node.right = tmp.left;
         tmp.left = node;
+        return resetHeight(node, tmp);
+    }
+
+    private Node<K, V> resetHeight(Node<K, V> node, Node<K, V> tmp) {
         node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
         tmp.height = Math.max(getHeight(tmp.left), getHeight(tmp.right)) + 1;
         node = tmp;
@@ -76,7 +77,7 @@ public class AVLTree<K extends Comparable<? super K>,V extends Comparable<? supe
         while(!stack.isEmpty()) {
             node = stack.pop();
             int newHeight = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
-            // node is not a leaf node
+            // node is not a leaf node, and after insertion no need to rotate
             if (node.height > 1 && newHeight == node.height) {
                 stack.clear();
                 return;
@@ -112,29 +113,6 @@ public class AVLTree<K extends Comparable<? super K>,V extends Comparable<? supe
             }
         }
         root = node;
-    }
-
-    public List<List<K>> levelOrder(Node node) {
-        List<List<K>> res = new ArrayList<>();
-        if (node == null)
-            return res;
-        Queue<Node> q = new LinkedList<>();
-        q.add(node);
-        while (!q.isEmpty()) {
-            List<K> tmp = new ArrayList<>();
-            int level_nodes = q.size();
-            while (level_nodes > 0) {
-                Node<K, V> t = q.poll();
-                tmp.add(t.key);
-                if (t.left != null)
-                    q.add(t.left);
-                if (t.right != null)
-                    q.add(t.right);
-                level_nodes--;
-            }
-            res.add(tmp);
-        }
-        return res;
     }
 
     @Override
@@ -197,9 +175,64 @@ public class AVLTree<K extends Comparable<? super K>,V extends Comparable<? supe
         }
     }
 
-    @Override
-    public boolean remove(K key) {
-        return false;
+
+    public Node<K, V> deleteKV(Node<K, V> node, K key) {
+        if (node == null)
+            return null;
+        else {
+            if (key.compareTo(node.key) == 0) {
+                if (node.right == null && node.right == null)
+                    node = null;
+                else if (node.left != null && node.right == null)
+                    node = node.left;
+                else if (node.left == null && node.right != null)
+                    node = node.right;
+                else {
+                    Node<K, V> right_min = findMin(node.right);
+                    node.key = right_min.key;
+                    node.value = right_min.value;
+                    node.right = deleteKV(node.right, node.key);
+                }
+            }
+            else if (key.compareTo(node.key) < 0)
+//                node = node.left;
+                node.left = deleteKV(node.left, key);
+            else
+                node.right = deleteKV(node.right, key);
+//                node = node.right;
+        }
+        node = fixAfterDeletion(node);
+        return node;
+    }
+
+    public V remove(K key) {
+        Node<K, V> node = containKey(key);
+        if (node == null)
+            return null;
+        V oldValue = node.value;
+        this.root = deleteKV(root, key);
+        size --;
+        return oldValue;
+    }
+
+    private Node<K, V> fixAfterDeletion(Node<K, V> node) {
+        if (node == null)
+            return null;
+        node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
+        int d = getHeight(node.left) - getHeight(node.right);
+        if (d == 2) {
+            if (getHeight(node.left.left) - getHeight(node.left.right) >=0)
+                node = rotateLL(node);
+            else
+                node = rotateLR(node);
+        }
+        else if (d == -2){
+            if (getHeight(node.right.right) - getHeight(node.right.left) >=0)
+                node = rotateRR(node);
+            else
+                node = rotateRL(node);
+        }
+        return node;
     }
 
     @Override
@@ -248,9 +281,28 @@ public class AVLTree<K extends Comparable<? super K>,V extends Comparable<? supe
         }
     }
 
+
+
     @Override
     public void clear() {
-
+        this.root = null;
     }
+
+
+    public Node<K, V> findMin(Node<K, V> node) {
+        Node<K, V> res = node;
+        while(res.left != null)
+            res = res.left;
+        return res;
+    }
+
+    public  Node<K, V> findMax(Node<K, V> node) {
+        Node<K, V> res = node;
+        while(res.right != null) {
+            res = res.right;
+        }
+        return res;
+    }
+
 
 }

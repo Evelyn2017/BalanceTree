@@ -1,6 +1,4 @@
-package Tree;
-
-public interface Tree<K extends Comparable, V extends Comparable> {
+public interface Tree<K extends Comparable<? super K>, V extends Comparable<? super V>> {
     boolean isEmpty();
 
     int height();
@@ -9,11 +7,13 @@ public interface Tree<K extends Comparable, V extends Comparable> {
 
     boolean put(K key, V value);
 
-    boolean remove(K key);
+    Object remove(K key);
 
     boolean set(K key, K key1, V value);
 
     Object containKey(K key);
+
+    Object getValue(K key);
 
     void build(K[] keys, V[] values);
 

@@ -1,7 +1,4 @@
-import Tree.Tree;
-
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author evelyn
@@ -66,7 +63,7 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
 
 
     @Override
-    public boolean remove(K key) {
+    public V remove(K key) {
         if (this.root == null)
             throw new NullPointerException("can not remove from an empty tree!");
         if (containKey(key) == null)
@@ -82,14 +79,14 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
                     else
                         parent.left = null;
                     size--;
-                    return true;
+                    return tmp.value;
                 }
                 //case 2: left child == null
                 else if (!tmp.hasLeft()) {
                     if (tmp.key.compareTo(parent.key) < 0) {
                         parent.left = tmp.right;
                         size--;
-                        return true;
+                        return tmp.value;
                     } else {
                         parent.right = tmp.right;
                         size--;
@@ -97,7 +94,7 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
 //                        List<K> list = new ArrayList<>();
 //                        Map<K, V> map1 = new ConcurrentHashMap<>();
 //                        Map<K, V> map2 = new TreeMap<>();
-                        return true;
+                        return tmp.value;
                     }
 
                 }
@@ -106,11 +103,11 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
                     if (tmp.key.compareTo(key) < 0) {
                         parent.left = tmp.left;
                         size--;
-                        return true;
+                        return tmp.value;
                     } else {
                         parent.right = tmp.left;
                         size--;
-                        return true;
+                        return tmp.value;
                     }
                 }
                 //case 4: tmp.left child && tmp.right child != null
@@ -130,7 +127,7 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
                             parent.left = tmp_right_min;
                             tmp_right_min.left = tmp.left;
                             size--;
-                            return true;
+                            return tmp.value;
                         }
                         //case 4-1-2: tmp right has left child
                         // find min(min is left child of some node) and min_parent.left = min.right;
@@ -140,7 +137,7 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
                             tmp_right_min.left = tmp.left;
                             tmp_right_min.right = tmp.right;
                             size--;
-                            return true;
+                            return tmp.value;
                         }
                     }
                     //case 4-2: tmp node is a right child
@@ -151,7 +148,7 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
                             parent.right = tmp_right_min;
                             tmp_right_min.left = tmp.left;
                             size--;
-                            return true;
+                            return tmp.value;
                         }
                         //case 4-2-2: tmp right child has left child
                         // min_parent.left = min.right
@@ -161,7 +158,7 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
                             tmp_right_min.right = tmp.right;
                             tmp_right_min.left = tmp.left;
                             size--;
-                            return true;
+                            return tmp.value;
                         }
                     }
                 }
@@ -174,7 +171,7 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
                 tmp = tmp.right;
             }
         }
-        return false;
+        return null;
     }
 
     /**
@@ -241,57 +238,21 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
         return tmp;
     }
 
-    public Node<K, V> deleteKV(Node<K, V> node, K key) {
-        if (node == null)
-            return null;
-        else {
-            if (key.compareTo(node.key) == 0) {
-                if (node.right == null && node.right == null)
-                    node = null;
-                else if (node.left != null && node.right == null)
-                    node = node.left;
-                else if (node.left == null && node.right != null)
-                    node = node.right;
-                else {
-                    Node<K, V> right_min = findMin(node.right);
-                    node.key = right_min.key;
-                    node.val = right_min.val;
-                    node.right = deleteKV(node.right, node.key);
-                }
-            }
-            else if (key.compareTo(node.key) < 0)
-//                node = node.left;
-                node.left = deleteKV(node.left, key);
-            else
-                node.right = deleteKV(node.right, key);
-//                node = node.right;
-        }
-        return node;
-    }
-
-    public V removeK(K key) {
-        Node<K, V> node = containKey(key);
-        if (node == null)
-            return null;
-        V oldValue = node.val;
-        this.root = deleteKV(root, key);
-        size --;
-        return oldValue;
-    }
 
 
-    public static void main(String[] args) {
+
+//    public static void main(String[] args) {
 //        BinarySearchTree<Integer, Integer> tree = new BinarySearchTree<>();
 //        Integer[] keys = {18, 14, 30, 8, 16, 25, 33, 5, 10, 17, 20, 31, 36, 6,9, 7, 37};
 //        Integer[] values = {-1, -1, -1, -1, -1, -1,-1,-1 ,-1,-1,-1, -1, -1,-1,-1, -1, -1};
 //        tree.build(keys, values);
 //        tree.remove(7);
-    }
+//    }
 
 
     //TODO
-    public boolean getValue(V val) {
-        return true;
+    public V getValue(K key) {
+        return null;
     }
 
     /** TODO: after set -> left<root<right
@@ -306,7 +267,7 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
         while (node != null) {
             if (key.compareTo(node.key) == 0) {
                 node.key = key1;
-                node.val = value;
+                node.value = value;
                 return true;
             }
             if (key.compareTo(node.key) < 0)
@@ -437,29 +398,6 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
         }
     }
 
-
-    public List<List<K>> levelOrder(Node node) {
-        List<List<K>> res = new ArrayList<>();
-        if (node == null)
-            return res;
-        Queue<Node> q = new LinkedList<>();
-        q.add(node);
-        while (!q.isEmpty()) {
-            List<K> tmp = new ArrayList<>();
-            int level_nodes = q.size();
-            while (level_nodes > 0) {
-                Node<K, V> t = q.poll();
-                tmp.add(t.key);
-                if (t.left != null)
-                    q.add(t.left);
-                if (t.right != null)
-                    q.add(t.right);
-                level_nodes--;
-            }
-            res.add(tmp);
-        }
-        return res;
-    }
     public Node<K, V> findMin(Node<K, V> node) {
         Node<K, V> res = node;
         while(res.left != null)
@@ -476,33 +414,33 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
     }
 
 
-    /**
-     * TreeNode definition
-     *
-     * @param <K> key
-     * @param <V> value
-     */
-    static class Node<K, V>{
-        K key;
-        V val;
-        Node<K, V> left;
-        Node<K, V> right;
-
-//        Node<K, V> parent;
-
-        Node(K key, V val) {
-            this.key = key;
-            this.val = val;
-        }
-
-        Node () {}
-
-        public boolean hasRight() {
-            return right != null;
-        }
-
-        public boolean hasLeft() {
-            return left != null;
-        }
-    }
+//    /**
+//     * TreeNode definition
+//     *
+//     * @param <K> key
+//     * @param <V> value
+//     */
+//    static class Node<K, V>{
+//        K key;
+//        V val;
+//        Node<K, V> left;
+//        Node<K, V> right;
+//
+////        Node<K, V> parent;
+//
+//        Node(K key, V val) {
+//            this.key = key;
+//            this.val = val;
+//        }
+//
+//        Node () {}
+//
+//        public boolean hasRight() {
+//            return right != null;
+//        }
+//
+//        public boolean hasLeft() {
+//            return left != null;
+//        }
+//    }
 }

@@ -10,8 +10,9 @@ import java.util.TreeMap;
 import static org.junit.Assert.*;
 
 public class AVLTreeTest {
-    public static final int MAX = 20000;
+    public static final int MAX = 200;
     private Random random = new Random();
+    private Node<Integer, Integer> node = new Node<>();
 
     private Integer[] keys = {1,2,3,4,5,6};
     private Integer[] values = {1,2,3,4,5,6};
@@ -25,7 +26,7 @@ public class AVLTreeTest {
 
     @After
     public void tearDown() throws Exception {
-        System.out.println(tree.levelOrder(tree.getRoot()));
+        System.out.println(node.levelOrder(tree.getRoot()));
     }
 
     @Test
@@ -41,25 +42,20 @@ public class AVLTreeTest {
     }
 
     @Test
-    public void testJDKTreeMap() {
-        Map<Integer, Integer> map = new TreeMap<>();
-        for (int i = 0; i < MAX; i++) {
-            map.put(random.nextInt(MAX), random.nextInt(MAX));
-        }
-        for (int i = 0; i < MAX; i++) {
-            map.get(random.nextInt(MAX));
-        }
+    public void testDelete() {
+        tree.remove(4);
     }
 
-    @Test
-    public void testAVLTree() {
-        AVLTree<Integer, Integer> tre = new AVLTree<>();
-        for (int i = 0; i < MAX; i++) {
-            tre.put(i, random.nextInt(MAX));
-        }
-        tre.checkBalance();
-        for (int i = 0; i < MAX; i++) {
-            tre.getValue(random.nextInt(MAX));
-        }
-    }
+    //    @Test
+//    public void testJDKTreeMap() {
+//        Map<Integer, Integer> map = new TreeMap<>();
+//        for (int i = 0; i < keys.length; i++) {
+//            map.put(keys[i], values[i]);
+//        }
+//        for (int i = 0; i < MAX; i++) {
+//            map.get(random.nextInt(keys.length));
+//        }
+//    }
+
+
 }
