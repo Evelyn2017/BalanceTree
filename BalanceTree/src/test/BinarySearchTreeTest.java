@@ -56,6 +56,7 @@ public class BinarySearchTreeTest<K extends Comparable, V extends Comparable> {
     @Test
     public void height() {
         Assert.assertEquals(tree.height(), 6);
+//        Assert.assertFalse(tree.isBalance(tree.getRoot()));
     }
 
 
@@ -80,12 +81,12 @@ public class BinarySearchTreeTest<K extends Comparable, V extends Comparable> {
         Assert.assertNotNull(tree.containKey(containKey_pass));
         Assert.assertNull(tree.containKey(containKey_fail));
     }
-
-    @Test
-    public void clear() {
-        tree.clear();
-        Assert.assertEquals(tree.size(), 0);
-    }
+//
+//    @Test
+//    public void clear() {
+//        tree.clear();
+//        Assert.assertEquals(tree.size(), 0);
+//    }
 
     @Test
     public void put() {

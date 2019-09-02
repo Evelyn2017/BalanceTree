@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 public class AVLTreeTest {
     private Node<Integer, Integer> node = new Node<>();
 
-    private Integer[] keys = {1,2,3,4,5,6};
+    private Integer[] keys = {6,5,4,3,2,1};
     private Integer[] values = {1,2,3,4,5,6};
 
     AVLTree<Integer, Integer> tree = new AVLTree<>();

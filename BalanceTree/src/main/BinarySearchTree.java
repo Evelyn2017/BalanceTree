@@ -35,6 +35,7 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
         return this.height;
     }
 
+
     private int calHeight(Node node) {
         if (node == null)
             return 0;
@@ -42,6 +43,8 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
         int right_height = calHeight(node.right);
         return  left_height > right_height ? left_height + 1 : right_height + 1;
     }
+
+
 
     /**
      * @param keys [1,2,3]
@@ -59,6 +62,59 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
         for (int i = 0; i < keys.length; i++) {
             put(keys[i], values[i]);
         }
+    }
+
+    public Node<K, V> findParent(Node<K, V> node) {
+        Node<K, V> parent = this.root;
+        if (parent.left.key.compareTo(node.key) == 0 || parent.right.key.compareTo(node.key) ==0)
+            return parent;
+        if (parent.key.compareTo(node.key) > 0) {
+            parent = node;
+            node = node.left;
+        }
+        else {
+            parent = node;
+            node = node.right;
+        }
+        return parent;
+    }
+
+    public void transplant(Node<K, V> u, Node<K, V> v) {
+        Node u_parent = findParent(u);
+        Node v_parent = findParent(v);
+        
+        if (u.key.compareTo(root.key) == 0)
+            root = v;
+        
+        else if (u == u_parent.left)
+            u_parent.left = v;
+        else
+            u_parent.right = v;
+        
+        if (v != null) 
+            v_parent = u_parent;
+    }
+
+    public V deleteNode(K key) {
+        Node<K, V> node = containKey(key);
+        if (node.left == null) 
+            transplant(node, node.right);
+        else if (node.right == null) 
+            transplant(node, node.left);
+        
+        Node<K, V> y = node.right;
+        while(y.left != null)
+            y = y.left;
+        Node<K, V> y_parent = findParent(y);
+        if (y_parent != node) {
+            transplant(y, y.right);
+            y.right = node.right;
+            y_parent = y;
+        }
+        transplant(node, y);
+        y.left = node.left;
+        
+        return node.value;
     }
 
 
