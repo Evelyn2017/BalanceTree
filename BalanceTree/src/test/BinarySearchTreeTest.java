@@ -23,7 +23,8 @@ public class BinarySearchTreeTest<K extends Comparable, V extends Comparable> {
         tree.build(keys, values);
         System.out.println("\n---------before------- ");
         System.out.println("\npre order traverse:");
-        BinarySearchTree.preOrder(tree.getRoot());
+//        BinarySearchTree.preOrder(tree.getRoot());
+        System.out.println(tree.getRoot().levelOrder(tree.getRoot()));
         System.out.println("\ntree size : " + tree.size());
     }
 

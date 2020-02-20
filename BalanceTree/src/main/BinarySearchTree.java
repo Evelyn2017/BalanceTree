@@ -82,26 +82,26 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
     public void transplant(Node<K, V> u, Node<K, V> v) {
         Node u_parent = findParent(u);
         Node v_parent = findParent(v);
-        
+
         if (u.key.compareTo(root.key) == 0)
             root = v;
-        
+
         else if (u == u_parent.left)
             u_parent.left = v;
         else
             u_parent.right = v;
-        
-        if (v != null) 
+
+        if (v != null)
             v_parent = u_parent;
     }
 
     public V deleteNode(K key) {
         Node<K, V> node = containKey(key);
-        if (node.left == null) 
+        if (node.left == null)
             transplant(node, node.right);
-        else if (node.right == null) 
+        else if (node.right == null)
             transplant(node, node.left);
-        
+
         Node<K, V> y = node.right;
         while(y.left != null)
             y = y.left;
@@ -113,7 +113,7 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
         }
         transplant(node, y);
         y.left = node.left;
-        
+
         return node.value;
     }
 
@@ -302,12 +302,12 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
 //    }
 
 
-    //TODO
+    //TODO: getValue
     public V getValue(K key) {
         return null;
     }
 
-    /** TODO: after set -> left<root<right
+    /**
      * @param key 8
      * @param value true
      */
@@ -420,7 +420,7 @@ public class BinarySearchTree<K extends Comparable<? super K>, V extends Compara
         List<K> res = new ArrayList<>();
         if (node == null)
             return res;
-        Stack<Node> s = new Stack<>();
+        Stack<Node<K, V>> s = new Stack<>();
         s.push(node);
         while (!s.isEmpty()) {
             Node<K, V> tmp = s.pop();

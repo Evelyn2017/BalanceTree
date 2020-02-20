@@ -13,7 +13,7 @@ public interface Tree<K extends Comparable<? super K>, V extends Comparable<? su
 
     Object containKey(K key);
 
-    Object getValue(K key);
+    Object getValue (K key);
 
     void build(K[] keys, V[] values);
 

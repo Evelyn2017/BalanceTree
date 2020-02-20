@@ -100,7 +100,7 @@ public class Node<K extends Comparable<? super K>, V extends Comparable<? super 
         List<List<K>> res = new ArrayList<>();
         if (node == null)
             return res;
-        Queue<Node> q = new LinkedList<>();
+        Queue<Node<K ,V>> q = new LinkedList<>();
         q.add(node);
         while (!q.isEmpty()) {
             List<K> tmp = new ArrayList<>();
